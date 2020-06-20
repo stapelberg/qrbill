@@ -259,7 +259,16 @@ func (b *Bill) EncodeToSVG() ([]byte, error) {
 		return nil, err
 	}
 
-	// TODO: overlay the swiss cross logo!
+	// Overlay the swiss cross (not entirely scaled correctly, but should be
+	// good enough):
+	const px = 5
+	x := (30 - 4) * px
+	y := (30 - 4) * px
+
+	s.Rect(x+0*px, y+0*px, 8*px, 8*px, "fill:#FFFFFF")
+	s.Rect(x+0*px+2, y+0*px+2, 8*px-4, 8*px-4, "fill:#000000")
+	s.Rect(x+3*px, y+1*px, 2*px, 6*px, "fill:#FFFFFF")
+	s.Rect(x+1*px, y+3*px, 6*px, 2*px, "fill:#FFFFFF")
 
 	s.End()
 	return buf.Bytes(), nil
