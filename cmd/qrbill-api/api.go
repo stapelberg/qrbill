@@ -154,6 +154,12 @@ func logic() error {
 		}
 	})
 
+	mux.HandleFunc("/robots.txt", func(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, `User-agent: *
+Disallow: /
+`)
+	})
+
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
 			http.Error(w, "not found", http.StatusNotFound)
