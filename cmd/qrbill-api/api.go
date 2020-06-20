@@ -134,7 +134,11 @@ func logic() error {
 			debugHTML(w, r, prefix, qrch)
 		}
 
-		// TODO: add cache control headers
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+		// […] this alone is the only directive you need in preventing cached
+		// responses on modern browsers.
+		w.Header().Add("Cache-Control", "no-store")
+
 		if _, err := io.Copy(w, bytes.NewReader(b)); err != nil {
 			log.Printf("%s %s", prefix, err)
 			return
@@ -146,13 +150,7 @@ func logic() error {
 			http.Error(w, "not found", http.StatusNotFound)
 			return
 		}
-		w.Header().Add("Content-Type", "text/html; charset=utf-8")
-		// TODO: add explanation for how to construct a URL
-		// e.g. for usage in filemaker web view
-		fmt.Fprintf(w, "<ul>")
-		fmt.Fprintf(w, `<li>PNG referenz: <a href="/qr.png">qr.png</a>`+"\n")
-		fmt.Fprintf(w, `<li>SVG scalable: <a href="/qr.svg">qr.svg</a>`+"\n")
-		fmt.Fprintf(w, `<li>debug: <a href="/qr.html">qr.html</a>, or <a href="/qr.txt">qr.txt</a>`+"\n")
+		http.Redirect(w, r, "/qr?format=html", http.StatusFound)
 	})
 	log.Printf("QR Bill generation URL: http://%s/qr?format=html", *listen)
 	return http.ListenAndServe(*listen, nil)
