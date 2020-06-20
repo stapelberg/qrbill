@@ -9,14 +9,12 @@
 package qrbill
 
 import (
+	"bytes"
 	"image"
-	"log"
-	"os"
 	"strings"
 
 	"github.com/aaronarduino/goqrsvg"
 	svg "github.com/ajstarks/svgo"
-	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/qr"
 
 	// We currently read the swiss cross PNG version.
@@ -34,17 +32,16 @@ import (
 // https://github.com/codebude/QRCoder/wiki/Advanced-usage---Payload-generators#317-swissqrcode-iso-20022
 
 const (
-	// QRType is an unambiguous indicator for the Swiss QR Code. Fixed value
-	// "SPC".
+	// QRType is an unambiguous indicator for the Swiss QR Code. Fixed value.
 	QRType = "SPC" // Swiss Payments Code
 
 	// Version contains the version of the specifications (Implementation
 	// Guidelines) in use on the date on which the Swiss QR Code was
 	// created. The first two positions indicate the main version, the following
-	// two positions the sub-version. Fixed value of "0200" for Version 2.0.
+	// two positions the sub-version. Fixed value.
 	Version = "0200" // Version 2.0
 
-	// CodingType is the character set code. Fixed value "1".
+	// CodingType is the character set code. Fixed value.
 	CodingType = "1" // UTF-8 restricted to the Latin character set
 )
 
@@ -58,7 +55,6 @@ const (
 
 // - fixed length: 21 alphanumeric characters
 // - only IBANs with CH or LI country code permitted
-var iban = "CH0209000000870913543"
 
 type Address struct {
 	AdrTp            AddressType
@@ -106,176 +102,93 @@ type QRCH struct {
 	RmtInf    QRCHRmtInf  // Payment reference
 }
 
-func (q *QRCH) QRContents() string {
-	return strings.Join([]string{
-		q.Header.QRType,
-		q.Header.Version,
-		q.Header.Coding,
-
-		q.CdtrInf.IBAN,
-
-		string(q.CdtrInf.Cdtr.AdrTp),
-		q.CdtrInf.Cdtr.Name,
-		q.CdtrInf.Cdtr.StrtNmOrAdrLine1,
-		q.CdtrInf.Cdtr.BldgNbOrAdrLine2,
-		q.CdtrInf.Cdtr.PstCd,
-		q.CdtrInf.Cdtr.TwnNm,
-		q.CdtrInf.Cdtr.Ctry,
-
-		string(q.UltmtCdtr.AdrTp),
-		q.UltmtCdtr.Name,
-		q.UltmtCdtr.StrtNmOrAdrLine1,
-		q.UltmtCdtr.BldgNbOrAdrLine2,
-		q.UltmtCdtr.PstCd,
-		q.UltmtCdtr.TwnNm,
-		q.UltmtCdtr.Ctry,
-
-		q.CcyAmt.Amt,
-		q.CcyAmt.Ccy,
-
-		string(q.UltmtDbtr.AdrTp),
-		q.UltmtDbtr.Name,
-		q.UltmtDbtr.StrtNmOrAdrLine1,
-		q.UltmtDbtr.BldgNbOrAdrLine2,
-		q.UltmtDbtr.PstCd,
-		q.UltmtDbtr.TwnNm,
-		q.UltmtDbtr.Ctry,
-
-		q.RmtInf.Tp,
-		q.RmtInf.Ref,
-		q.RmtInf.AddInf.Ustrd,
-		q.RmtInf.AddInf.Trailer,
-	}, "\n")
+func (q *QRCH) Fill() *QRCH {
+	clone := &QRCH{}
+	*clone = *q
+	clone.Header.QRType = QRType
+	clone.Header.Version = Version
+	clone.Header.Coding = CodingType
+	clone.RmtInf.AddInf.Trailer = "EPD" // TODO: constant
+	return clone
 }
 
-// https://www.paymentstandards.ch/dam/downloads/qrcodegenerator.java
-func generateSwissQrCode(content string) error {
-	// generate the qr code from the payload
-	code, err := qr.Encode(content, qr.M, qr.Auto)
-	if err != nil {
-		return err
-	}
+func (q *QRCH) Encode() (*Bill, error) {
+	f := q.Fill()
+	//f := q.Fill()
+	// TODO: data content must be no more than 997 characters
+	// TODO: truncate fields where necessary
+	return &Bill{
+		qrcontents: strings.Join([]string{
+			f.Header.QRType,
+			f.Header.Version,
+			f.Header.Coding,
 
-	// overlay the qr code with a Swiss Cross
-	combined, err := overlayWithSwissCross(code)
-	if err != nil {
-		return err
-	}
-	_ = combined
+			f.CdtrInf.IBAN,
 
-	return nil
+			string(f.CdtrInf.Cdtr.AdrTp),
+			f.CdtrInf.Cdtr.Name,
+			f.CdtrInf.Cdtr.StrtNmOrAdrLine1,
+			f.CdtrInf.Cdtr.BldgNbOrAdrLine2,
+			f.CdtrInf.Cdtr.PstCd,
+			f.CdtrInf.Cdtr.TwnNm,
+			f.CdtrInf.Cdtr.Ctry,
+
+			string(f.UltmtCdtr.AdrTp),
+			f.UltmtCdtr.Name,
+			f.UltmtCdtr.StrtNmOrAdrLine1,
+			f.UltmtCdtr.BldgNbOrAdrLine2,
+			f.UltmtCdtr.PstCd,
+			f.UltmtCdtr.TwnNm,
+			f.UltmtCdtr.Ctry,
+
+			f.CcyAmt.Amt,
+			f.CcyAmt.Ccy,
+
+			string(f.UltmtDbtr.AdrTp),
+			f.UltmtDbtr.Name,
+			f.UltmtDbtr.StrtNmOrAdrLine1,
+			f.UltmtDbtr.BldgNbOrAdrLine2,
+			f.UltmtDbtr.PstCd,
+			f.UltmtDbtr.TwnNm,
+			f.UltmtDbtr.Ctry,
+
+			f.RmtInf.Tp,
+			f.RmtInf.Ref,
+			f.RmtInf.AddInf.Ustrd,
+			"EPD", // TODO: constant
+		}, "\n"),
+	}, nil
 }
 
-func overlayWithSwissCross(code barcode.Barcode) (image.Image, error) {
-	// TODO: bundle a swiss cross image
-	const swissCrossPath = "/home/michael/go/src/github.com/stapelberg/qrbill/third_party/swiss-cross/CH-Kreuz_7mm/CH-Kreuz_7mm.png"
-
-	// TODO: read swiss cross image
-	f, err := os.Open(swissCrossPath)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-	m, _, err := image.Decode(f)
-	if err != nil {
-		return nil, err
-	}
-	log.Printf("bounds: %+v", m.Bounds())
-	return nil, nil
+type Bill struct {
+	qrcontents string
 }
 
-func Generate() error {
-	log.Printf("hey!")
-
-	content := (&QRCH{
-		Header: QRCHHeader{
-			QRType:  QRType,
-			Version: Version,
-			Coding:  CodingType,
-		},
-		CdtrInf: QRCHCdtrInf{
-			IBAN: iban,
-			Cdtr: Address{
-				AdrTp:            AddressTypeStructured, // CR AddressTyp
-				Name:             "Legalize it!",        // CR Name
-				StrtNmOrAdrLine1: "Quellenstrasse 25",   // CR Street or address line 1
-				BldgNbOrAdrLine2: "",                    // CR Building number or address line 2
-				PstCd:            "8005",                // CR Postal code
-				TwnNm:            "Zürich",              // CR City
-				Ctry:             "CH",                  // CR Country
-			},
-		},
-		CcyAmt: QRCHCcyAmt{
-			Amt: "",
-			Ccy: "CHF",
-		},
-		UltmtDbtr: Address{
-			"S",                  // UD AddressTyp
-			"Michael Stapelberg", // UD Name
-			"Brahmsstrasse 21",   // UD Street or address line 1
-			"",                   // UD Building number or address line 2
-			"8003",               // Postal code
-			"Zürich",             // City
-			"CH",                 // Country
-		},
-		RmtInf: QRCHRmtInf{
-			Tp:  "NON", // Reference type
-			Ref: "",    // Reference
-			AddInf: QRCHRmtInfAddInf{
-				Ustrd:   "Spende 6141",
-				Trailer: "EPD",
-			},
-		},
-	}).QRContents()
-
+func (b *Bill) EncodeToSVG() ([]byte, error) {
 	// as per https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf, section 5.1:
 	// Error correction level M (redundancy of around 15%)
 
-	// TODO: data content must be no more than 997 characters
+	// Section 4.2.1: Character set:
+	// UTF-8 should be used for encoding
 
-	// https://www.PaymentStandards.CH/FAQ)
-	// TODO: auf version 24 (46mm x 46mm) skalieren
-
-	// version 25 with 117 x 117 modules
-
-	// minimum module size of 0.4mm (recommended for printing)
-
-	// TODO: overlay the swiss cross logo!
-	// TODO: verify dimensions when printed
-
-	// TODO: ensure UTF-8
-	code, err := qr.Encode(content, qr.M, qr.Auto)
+	code, err := qr.Encode(b.qrcontents, qr.M, qr.Unicode)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	f, err := os.Create("/tmp/code.svg")
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-	s := svg.New(f)
+	var buf bytes.Buffer
+	s := svg.New(&buf)
 	qrsvg := goqrsvg.NewQrSVG(code, 5)
 	qrsvg.StartQrSVG(s)
 	if err := qrsvg.WriteQrSVG(s); err != nil {
-		return err
+		return nil, err
 	}
+
+	// TODO: overlay the swiss cross logo!
+
 	s.End()
-	if err := f.Close(); err != nil {
-		return err
-	}
+	return buf.Bytes(), nil
+}
 
-	if err := generateSwissQrCode(content); err != nil {
-		return err
-	}
-
-	/*
-		code, err := qrcode.NewWithForcedVersion(content, 25, qrcode.Medium)
-		if err != nil {
-			return err
-		}
-		log.Printf("code: %v", code)
-		const pixelsPerMillimeter = 10
-		return code.WriteFile(-2, "/tmp/code.png")
-	*/
-	return nil
+func (b *Bill) EncodeToImage() (image.Image, error) {
+	return generateSwissQrCode(b.qrcontents)
 }
