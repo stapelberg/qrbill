@@ -8,8 +8,13 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/http/httptest"
+	"net/url"
+	"os"
+	"strings"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/mattn/go-isatty"
 	"github.com/stapelberg/qrbill"
 
 	_ "net/http/pprof"
@@ -65,7 +70,9 @@ func logic() error {
 	var listen = flag.String("listen", "localhost:9933", "[host]:port to listen on")
 	flag.Parse()
 
-	http.HandleFunc("/qr", func(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/qr", func(w http.ResponseWriter, r *http.Request) {
 		prefix := "[" + r.RemoteAddr + "]"
 		format := r.FormValue("format")
 		log.Printf("%s handling request for %s, format=%s", prefix, r.URL.Path, format)
@@ -147,15 +154,42 @@ func logic() error {
 		}
 	})
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
 			http.Error(w, "not found", http.StatusNotFound)
 			return
 		}
 		http.Redirect(w, r, "/qr?format=html", http.StatusFound)
 	})
+
+	if flag.NArg() > 0 {
+		srv := httptest.NewServer(mux)
+		defer srv.Close()
+		for _, arg := range flag.Args() {
+			u, err := url.Parse(arg)
+			if err != nil {
+				return err
+			}
+			u.Host = strings.TrimPrefix(srv.URL, "http://")
+			resp, err := srv.Client().Get(u.String())
+			if err != nil {
+				return err
+			}
+			ct := resp.Header.Get("Content-Type")
+			if !strings.HasPrefix(ct, "text/") &&
+				isatty.IsTerminal(os.Stdout.Fd()) {
+				fmt.Fprintf(os.Stderr, "not writing raw image data to terminal, did you forget to redirect the output?\n")
+				os.Exit(2)
+			}
+			if _, err := io.Copy(os.Stdout, resp.Body); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+
 	log.Printf("QR Bill generation URL: http://%s/qr?format=html", *listen)
-	return http.ListenAndServe(*listen, nil)
+	return http.ListenAndServe(*listen, mux)
 }
 
 func main() {
