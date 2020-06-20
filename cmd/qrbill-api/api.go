@@ -50,7 +50,7 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 			// Must be structured address e.g. for ZKB mobile banking app
 			AdrTp:            qrbill.AddressTypeStructured,
 			Name:             ifEmpty(r.FormValue("udname"), "Michael Stapelberg"),
-			StrtNmOrAdrLine1: ifEmpty(r.FormValue("udaddr1"), "Brahmsstrasse 21"),
+			StrtNmOrAdrLine1: ifEmpty(r.FormValue("udaddr1"), "Stauffacherstr 42"),
 			BldgNbOrAdrLine2: ifEmpty(r.FormValue("udaddr2"), ""),
 			PstCd:            ifEmpty(r.FormValue("udpost"), "8003"),
 			TwnNm:            ifEmpty(r.FormValue("udcity"), "Zürich"),
@@ -60,7 +60,7 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 			Tp:  "NON", // Reference type
 			Ref: "",    // Reference
 			AddInf: qrbill.QRCHRmtInfAddInf{
-				Ustrd: ifEmpty(r.FormValue("message"), "Spende 6141"),
+				Ustrd: ifEmpty(r.FormValue("message"), "Spende 420"),
 			},
 		},
 	}
