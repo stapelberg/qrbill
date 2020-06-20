@@ -6,11 +6,16 @@
 //
 // https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf (English)
 // https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-de.pdf (German)
+//
+// Note
+//
+// QRR and SCOR references are not yet implemented.
 package qrbill
 
 import (
 	"bytes"
 	"image"
+	"regexp"
 	"strings"
 
 	"github.com/aaronarduino/goqrsvg"
@@ -24,9 +29,6 @@ import (
 // As per section 4.1: In general:
 // Oriented upon the Swiss Implementation Guidelines for Credit Transfers for
 // the ISO 20022 Customer Credit Transfer Initiation message (pain.001).
-
-// Section 4.2.1: Character set:
-// UTF-8 should be used for encoding
 
 // see also:
 // https://github.com/codebude/QRCoder/wiki/Advanced-usage---Payload-generators#317-swissqrcode-iso-20022
@@ -43,6 +45,10 @@ const (
 
 	// CodingType is the character set code. Fixed value.
 	CodingType = "1" // UTF-8 restricted to the Latin character set
+
+	// Trailer is an unambiguous indicator for the end of payment data. Fixed
+	// value.
+	Trailer = "EPD" // End Payment Data
 )
 
 // AddressType corresponds to AdrTp in ISO20022.
@@ -53,9 +59,6 @@ const (
 	AddressTypeCombined               = "K"
 )
 
-// - fixed length: 21 alphanumeric characters
-// - only IBANs with CH or LI country code permitted
-
 type Address struct {
 	AdrTp            AddressType
 	Name             string // Name, max 70. chars, first name + last name, or company name
@@ -64,6 +67,32 @@ type Address struct {
 	PstCd            string // Postal code, max 16 chars, must be provided without a country code prefix
 	TwnNm            string // Town, max. 35 chars
 	Ctry             string // Country, two-digit country code according to ISO 3166-1
+}
+
+func (a Address) Validate() Address {
+	c := a
+
+	if v := c.Name; len(v) > 70 {
+		c.Name = v[:70]
+	}
+
+	if v := c.StrtNmOrAdrLine1; len(v) > 70 {
+		c.StrtNmOrAdrLine1 = v[:70]
+	}
+
+	if v := c.BldgNbOrAdrLine2; len(v) > 16 {
+		c.BldgNbOrAdrLine2 = v[:16]
+	}
+
+	if v := c.PstCd; len(v) > 16 {
+		c.PstCd = v[:16]
+	}
+
+	if v := c.TwnNm; len(v) > 35 {
+		c.TwnNm = v[:35]
+	}
+
+	return c
 }
 
 type QRCHHeader struct {
@@ -102,21 +131,68 @@ type QRCH struct {
 	RmtInf    QRCHRmtInf  // Payment reference
 }
 
-func (q *QRCH) Fill() *QRCH {
+var (
+	nonNumericRe      = regexp.MustCompile(`[^0-9]`)
+	nonAlphanumericRe = regexp.MustCompile(`[^A-Za-z0-9]`)
+	nonDecimalRe      = regexp.MustCompile(`[^0-9.]`)
+)
+
+func (q *QRCH) Validate() *QRCH {
 	clone := &QRCH{}
 	*clone = *q
+
+	// Fill in all fixed values:
 	clone.Header.QRType = QRType
 	clone.Header.Version = Version
 	clone.Header.Coding = CodingType
-	clone.RmtInf.AddInf.Trailer = "EPD" // TODO: constant
+	clone.RmtInf.AddInf.Trailer = Trailer
+
+	// TODO(spec): strictly speaking, we need to restrict ourselves only to
+	// permitted characters (see below). But, even the example from SIX does not
+	// do that (Monatspr_ä_mie):
+	// https://www.moneytoday.ch/lexikon/qr-rechnung/
+
+	// 4.3.2 Permitted characters
+	// general: only the latin character set is permitted. UTF-8 should be used for encoding
+	// numeric: 0-9
+	// alphanumeric: A-Z a-z 0-9
+	// decimal: 0-9 plus decimal separator .
+
+	// Character Set as per PAIN.001.001.03:
+	// https://businessbanking.bankofireland.com/app/uploads/2018/11/OMI015017-Credit-Transfer-PAIN.001.001.03-DIGITALFINAL-VERSION.pdf
+
+	// a b c d e f g h i j k l m n o p q r s t u v w x y z
+	// A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+	// / - ? : ( ) . , ' +
+	// <space>
+
+	// Enforce all field constraints:
+
+	clone.CdtrInf.IBAN = nonAlphanumericRe.ReplaceAllString(clone.CdtrInf.IBAN, "")
+
+	clone.CdtrInf.Cdtr = clone.CdtrInf.Cdtr.Validate()
+
+	clone.UltmtCdtr = clone.UltmtCdtr.Validate()
+
+	clone.RmtInf.Tp = nonAlphanumericRe.ReplaceAllString(clone.RmtInf.Tp, "")
+	if v := clone.RmtInf.Tp; len(v) > 4 {
+		clone.RmtInf.Tp = v[:4]
+	}
+
+	clone.RmtInf.Ref = nonAlphanumericRe.ReplaceAllString(clone.RmtInf.Ref, "")
+	if v := clone.RmtInf.Ref; len(v) > 27 {
+		clone.RmtInf.Ref = v[:27]
+	}
+
+	if v := clone.RmtInf.AddInf.Ustrd; len(v) > 140 {
+		clone.RmtInf.AddInf.Ustrd = v[:140]
+	}
+
 	return clone
 }
 
 func (q *QRCH) Encode() (*Bill, error) {
-	f := q.Fill()
-	//f := q.Fill()
-	// TODO: data content must be no more than 997 characters
-	// TODO: truncate fields where necessary
+	f := q.Validate()
 	return &Bill{
 		qrcontents: strings.Join([]string{
 			f.Header.QRType,
@@ -155,7 +231,7 @@ func (q *QRCH) Encode() (*Bill, error) {
 			f.RmtInf.Tp,
 			f.RmtInf.Ref,
 			f.RmtInf.AddInf.Ustrd,
-			"EPD", // TODO: constant
+			f.RmtInf.AddInf.Trailer,
 		}, "\n"),
 	}, nil
 }

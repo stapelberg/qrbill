@@ -27,6 +27,7 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 		CdtrInf: qrbill.QRCHCdtrInf{
 			IBAN: ifEmpty(r.FormValue("criban"), "CH0209000000870913543"),
 			Cdtr: qrbill.Address{
+				// Must be structured address e.g. for ZKB mobile banking app
 				AdrTp:            qrbill.AddressTypeStructured,
 				Name:             ifEmpty(r.FormValue("crname"), "Legalize it!"),
 				StrtNmOrAdrLine1: ifEmpty(r.FormValue("craddr1"), "Quellenstrasse 25"),
@@ -41,6 +42,7 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 			Ccy: "CHF",
 		},
 		UltmtDbtr: qrbill.Address{
+			// Must be structured address e.g. for ZKB mobile banking app
 			AdrTp:            qrbill.AddressTypeStructured,
 			Name:             ifEmpty(r.FormValue("udname"), "Michael Stapelberg"),
 			StrtNmOrAdrLine1: ifEmpty(r.FormValue("udaddr1"), "Brahmsstrasse 21"),
@@ -128,7 +130,7 @@ func logic() error {
 
 		case "txt":
 			w.Header().Add("Content-Type", "text/plain; charset=utf-8")
-			spew.Fdump(w, qrch.Fill())
+			spew.Fdump(w, qrch.Validate())
 
 		case "html":
 			debugHTML(w, r, prefix, qrch)

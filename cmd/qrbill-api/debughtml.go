@@ -185,7 +185,7 @@ func debugHTML(w http.ResponseWriter, r *http.Request, prefix string, qrch *qrbi
 	}
 	fmt.Fprintf(w, `<div class="qrch"><h1>input</h1>%s</div>`, spew(qrch))
 
-	fmt.Fprintf(w, `<div class="qrch"><h1>validated</h1>%s</div>`, spew(qrch.Fill()))
+	fmt.Fprintf(w, `<div class="qrch"><h1>validated</h1>%s</div>`, spew(qrch.Validate()))
 
 	r.URL.Path = "/qr"
 	v := r.URL.Query()
