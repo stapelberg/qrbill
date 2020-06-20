@@ -1,9 +1,9 @@
 package qrbill
 
 import (
+	"bytes"
 	"image"
 	"image/draw"
-	"os"
 
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/qr"
@@ -50,15 +50,8 @@ func generateQrCodeImage(payload string) (image.Image, error) {
 }
 
 func overlayWithSwissCross(qrCodeImage image.Image) (image.Image, error) {
-	// TODO: bundle the swiss cross image instead of reading it
-	const swissCrossPath = "/home/michael/go/src/github.com/stapelberg/qrbill/third_party/swiss-cross/CH-Kreuz_7mm/CH-Kreuz_7mm.png"
-
-	f, err := os.Open(swissCrossPath)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-	swissCrossImage, _, err := image.Decode(f)
+	b := swisscross["third_party/swiss-cross/CH-Kreuz_7mm/CH-Kreuz_7mm.png"]
+	swissCrossImage, _, err := image.Decode(bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}
