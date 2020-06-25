@@ -66,8 +66,11 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 	}
 }
 
+// Overridden in api_gokrazy.go
+var defaultListenAddress = "localhost:9933"
+
 func logic() error {
-	var listen = flag.String("listen", "localhost:9933", "[host]:port to listen on")
+	var listen = flag.String("listen", defaultListenAddress, "[host]:port to listen on")
 	flag.Parse()
 
 	mux := http.NewServeMux()
