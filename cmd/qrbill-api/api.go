@@ -92,7 +92,8 @@ func logic() error {
 		if format != "png" &&
 			format != "svg" &&
 			format != "txt" &&
-			format != "html" {
+			format != "html" &&
+			format != "wv" {
 			msg := fmt.Sprintf("format (%q) must be one of png, svg, txt or html", format)
 			log.Printf("%s %s", prefix, msg)
 			http.Error(w, msg, http.StatusBadRequest)
@@ -144,6 +145,33 @@ func logic() error {
 
 		case "html":
 			debugHTML(w, r, prefix, qrch)
+
+		case "wv":
+			w.Header().Add("Content-Type", "text/html; charset=utf-8")
+
+			r.URL.Path = "/qr"
+			v := r.URL.Query()
+			v.Set("format", "png")
+			r.URL.RawQuery = v.Encode()
+
+			fmt.Fprintf(w, `<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+img {
+width: 100vw;
+height: 100vh;
+}
+body {
+margin: 0; padding: 0;
+}
+</style>
+</head>
+<body>
+<img src="%s">
+</body>
+</html>`, r.URL.String())
+
 		}
 
 		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
