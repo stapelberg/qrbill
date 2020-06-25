@@ -20,25 +20,25 @@ import (
 	_ "net/http/pprof"
 )
 
-func ifEmpty(s, alternative string) string {
-	if s == "" {
+func ifEmpty(form url.Values, key, alternative string) string {
+	if len(form[key]) == 0 {
 		return alternative
 	}
-	return s
+	return form[key][0]
 }
 
 func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 	return &qrbill.QRCH{
 		CdtrInf: qrbill.QRCHCdtrInf{
-			IBAN: ifEmpty(r.FormValue("criban"), "CH0209000000870913543"),
+			IBAN: ifEmpty(r.Form, "criban", "CH0209000000870913543"),
 			Cdtr: qrbill.Address{
 				AdrTp:            qrbill.AddressTypeCombined,
-				Name:             ifEmpty(r.FormValue("crname"), "Legalize it!"),
-				StrtNmOrAdrLine1: ifEmpty(r.FormValue("craddr1"), "Quellenstrasse 25"),
-				BldgNbOrAdrLine2: ifEmpty(r.FormValue("craddr2"), "8005 Zürich"),
-				PstCd:            ifEmpty(r.FormValue("crpost"), ""),
-				TwnNm:            ifEmpty(r.FormValue("crcity"), ""),
-				Ctry:             ifEmpty(r.FormValue("crcountry"), "CH"),
+				Name:             ifEmpty(r.Form, "crname", "Legalize it!"),
+				StrtNmOrAdrLine1: ifEmpty(r.Form, "craddr1", "Quellenstrasse 25"),
+				BldgNbOrAdrLine2: ifEmpty(r.Form, "craddr2", "8005 Zürich"),
+				PstCd:            ifEmpty(r.Form, "crpost", ""),
+				TwnNm:            ifEmpty(r.Form, "crcity", ""),
+				Ctry:             ifEmpty(r.Form, "crcountry", "CH"),
 			},
 		},
 		CcyAmt: qrbill.QRCHCcyAmt{
@@ -47,18 +47,18 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 		},
 		UltmtDbtr: qrbill.Address{
 			AdrTp:            qrbill.AddressTypeCombined,
-			Name:             ifEmpty(r.FormValue("udname"), "Michael Stapelberg"),
-			StrtNmOrAdrLine1: ifEmpty(r.FormValue("udaddr1"), "Stauffacherstr 42"),
-			BldgNbOrAdrLine2: ifEmpty(r.FormValue("udaddr2"), "8004 Zürich"),
-			PstCd:            ifEmpty(r.FormValue("udpost"), ""),
-			TwnNm:            ifEmpty(r.FormValue("udcity"), ""),
-			Ctry:             ifEmpty(r.FormValue("udcountry"), "CH"),
+			Name:             ifEmpty(r.Form, "udname", "Michael Stapelberg"),
+			StrtNmOrAdrLine1: ifEmpty(r.Form, "udaddr1", "Stauffacherstr 42"),
+			BldgNbOrAdrLine2: ifEmpty(r.Form, "udaddr2", "8004 Zürich"),
+			PstCd:            ifEmpty(r.Form, "udpost", ""),
+			TwnNm:            ifEmpty(r.Form, "udcity", ""),
+			Ctry:             ifEmpty(r.Form, "udcountry", "CH"),
 		},
 		RmtInf: qrbill.QRCHRmtInf{
 			Tp:  "NON", // Reference type
 			Ref: "",    // Reference
 			AddInf: qrbill.QRCHRmtInfAddInf{
-				Ustrd: ifEmpty(r.FormValue("message"), "Spende 420"),
+				Ustrd: ifEmpty(r.Form, "message", "Spende 420"),
 			},
 		},
 	}
@@ -95,6 +95,12 @@ func logic() error {
 			msg := fmt.Sprintf("format (%q) must be one of png, svg, txt or html", format)
 			log.Printf("%s %s", prefix, msg)
 			http.Error(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		if err := r.ParseForm(); err != nil {
+			log.Printf("%s %s", prefix, err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
