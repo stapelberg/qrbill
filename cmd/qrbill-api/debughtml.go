@@ -32,8 +32,6 @@ var tmpl = template.Must(template.New("").Parse(`<!DOCTYPE html>
 .qrch { font-family: monospace; }
 th { text-align: left; }
 #params tr td:nth-child(2) { color: blue; }
-#params tr td:nth-child(1)::before { content: "&"; }
-#params tr td:nth-child(1)::after { content: "="; }
 
   </style>
 </head>
@@ -48,73 +46,73 @@ th { text-align: left; }
 </tr>
 
 <tr>
-  <td>criban</td>
+  <td>&criban=</td>
   <td>{{ .Criban }}</td>
 </tr>
 
 <tr>
-  <td>crname</td>
+  <td>&crname=</td>
   <td>{{ .Crname }}</td>
 </tr>
 
 <tr>
-  <td>craddr1</td>
+  <td>&craddr1=</td>
   <td>{{ .Craddr1 }}</td>
 </tr>
 
 <tr>
-  <td>craddr2</td>
+  <td>&craddr2=</td>
   <td>{{ .Craddr2 }}</td>
 </tr>
 
 <tr>
-  <td>crpost</td>
+  <td>&crpost=</td>
   <td>{{ .Crpost }}</td>
 </tr>
 
 <tr>
-  <td>crcity</td>
+  <td>&crcity=</td>
   <td>{{ .Crcity }}</td>
 </tr>
 
 <tr>
-  <td>crcountry</td>
+  <td>&crcountry=</td>
   <td>{{ .Crcountry }}</td>
 </tr>
 
 
 <tr>
-  <td>udname</td>
+  <td>&udname=</td>
   <td>{{ .Udname }}</td>
 </tr>
 
 <tr>
-  <td>udaddr1</td>
+  <td>&udaddr1=</td>
   <td>{{ .Udaddr1 }}</td>
 </tr>
 
 <tr>
-  <td>udaddr2</td>
+  <td>&udaddr2=</td>
   <td>{{ .Udaddr2 }}</td>
 </tr>
 
 <tr>
-  <td>udpost</td>
+  <td>&udpost=</td>
   <td>{{ .Udpost }}</td>
 </tr>
 
 <tr>
-  <td>udcity</td>
+  <td>&udcity=</td>
   <td>{{ .Udcity }}</td>
 </tr>
 
 <tr>
-  <td>udcountry</td>
+  <td>&udcountry=</td>
   <td>{{ .Udcountry }}</td>
 </tr>
 
 <tr>
-  <td>message</td>
+  <td>&message=</td>
   <td>{{ .Message }}</td>
 </tr>
 
