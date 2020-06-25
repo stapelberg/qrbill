@@ -32,13 +32,12 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 		CdtrInf: qrbill.QRCHCdtrInf{
 			IBAN: ifEmpty(r.FormValue("criban"), "CH0209000000870913543"),
 			Cdtr: qrbill.Address{
-				// Must be structured address e.g. for ZKB mobile banking app
-				AdrTp:            qrbill.AddressTypeStructured,
+				AdrTp:            qrbill.AddressTypeCombined,
 				Name:             ifEmpty(r.FormValue("crname"), "Legalize it!"),
 				StrtNmOrAdrLine1: ifEmpty(r.FormValue("craddr1"), "Quellenstrasse 25"),
-				BldgNbOrAdrLine2: ifEmpty(r.FormValue("craddr2"), ""),
-				PstCd:            ifEmpty(r.FormValue("crpost"), "8005"),
-				TwnNm:            ifEmpty(r.FormValue("crcity"), "Zürich"),
+				BldgNbOrAdrLine2: ifEmpty(r.FormValue("craddr2"), "8005 Zürich"),
+				PstCd:            ifEmpty(r.FormValue("crpost"), ""),
+				TwnNm:            ifEmpty(r.FormValue("crcity"), ""),
 				Ctry:             ifEmpty(r.FormValue("crcountry"), "CH"),
 			},
 		},
@@ -47,13 +46,12 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 			Ccy: "CHF",
 		},
 		UltmtDbtr: qrbill.Address{
-			// Must be structured address e.g. for ZKB mobile banking app
-			AdrTp:            qrbill.AddressTypeStructured,
+			AdrTp:            qrbill.AddressTypeCombined,
 			Name:             ifEmpty(r.FormValue("udname"), "Michael Stapelberg"),
 			StrtNmOrAdrLine1: ifEmpty(r.FormValue("udaddr1"), "Stauffacherstr 42"),
-			BldgNbOrAdrLine2: ifEmpty(r.FormValue("udaddr2"), ""),
-			PstCd:            ifEmpty(r.FormValue("udpost"), "8003"),
-			TwnNm:            ifEmpty(r.FormValue("udcity"), "Zürich"),
+			BldgNbOrAdrLine2: ifEmpty(r.FormValue("udaddr2"), "8004 Zürich"),
+			PstCd:            ifEmpty(r.FormValue("udpost"), ""),
+			TwnNm:            ifEmpty(r.FormValue("udcity"), ""),
 			Ctry:             ifEmpty(r.FormValue("udcountry"), "CH"),
 		},
 		RmtInf: qrbill.QRCHRmtInf{
