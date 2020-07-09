@@ -126,6 +126,12 @@ th { text-align: left; }
 </tr>
 
 <tr>
+  <td>&amount=</td>
+  <td>{{ .Amount }}</td>
+</tr>
+
+
+<tr>
   <td>&message=</td>
   <td>{{ .Message }}</td>
 </tr>
@@ -156,6 +162,8 @@ func debugHTML(w http.ResponseWriter, r *http.Request, prefix string, qrch *qrbi
 		Udcountry string
 
 		Message string
+
+		Amount string
 	}{
 		Criban: r.FormValue("criban"),
 
@@ -174,6 +182,8 @@ func debugHTML(w http.ResponseWriter, r *http.Request, prefix string, qrch *qrbi
 		Udcountry: r.FormValue("udcountry"),
 
 		Message: r.FormValue("message"),
+
+		Amount: r.FormValue("amount"),
 	})
 	if err != nil {
 		log.Printf("%s %s", prefix, err)

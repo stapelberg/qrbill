@@ -56,7 +56,7 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 			},
 		},
 		CcyAmt: qrbill.QRCHCcyAmt{
-			Amt: "",
+			Amt: ifEmpty(r.Form, "amount", ""),
 			Ccy: "CHF",
 		},
 		UltmtDbtr: qrbill.Address{
