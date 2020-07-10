@@ -136,6 +136,11 @@ th { text-align: left; }
   <td>{{ .Message }}</td>
 </tr>
 
+<tr>
+  <td>&udaddrtype=</td>
+  <td>{{ .Udaddrtype }}</td>
+</tr>
+
 </table>
 
 </div>
@@ -154,12 +159,13 @@ func debugHTML(w http.ResponseWriter, r *http.Request, prefix string, qrch *qrbi
 		Crcity    string
 		Crcountry string
 
-		Udname    string
-		Udaddr1   string
-		Udaddr2   string
-		Udpost    string
-		Udcity    string
-		Udcountry string
+		Udname     string
+		Udaddr1    string
+		Udaddr2    string
+		Udpost     string
+		Udcity     string
+		Udcountry  string
+		Udaddrtype string
 
 		Message string
 
@@ -174,12 +180,13 @@ func debugHTML(w http.ResponseWriter, r *http.Request, prefix string, qrch *qrbi
 		Crcity:    r.FormValue("crcity"),
 		Crcountry: r.FormValue("crcountry"),
 
-		Udname:    r.FormValue("udname"),
-		Udaddr1:   r.FormValue("udaddr1"),
-		Udaddr2:   r.FormValue("udaddr2"),
-		Udpost:    r.FormValue("udpost"),
-		Udcity:    r.FormValue("udcity"),
-		Udcountry: r.FormValue("udcountry"),
+		Udname:     r.FormValue("udname"),
+		Udaddr1:    r.FormValue("udaddr1"),
+		Udaddr2:    r.FormValue("udaddr2"),
+		Udpost:     r.FormValue("udpost"),
+		Udcity:     r.FormValue("udcity"),
+		Udcountry:  r.FormValue("udcountry"),
+		Udaddrtype: r.FormValue("udaddrtype"),
 
 		Message: r.FormValue("message"),
 
