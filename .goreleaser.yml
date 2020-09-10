@@ -19,6 +19,9 @@ builds:
   - arm
   - arm64
   - 386
+  ignore:
+  - goos: darwin
+    goarch: 386
 archives:
 - name_template: "qrbill_api_{{ .Os }}_{{ .Arch }}"
   replacements:
