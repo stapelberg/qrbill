@@ -149,6 +149,11 @@ var (
 	nonNumericRe      = regexp.MustCompile(`[^0-9]`)
 	nonAlphanumericRe = regexp.MustCompile(`[^A-Za-z0-9]`)
 	nonDecimalRe      = regexp.MustCompile(`[^0-9.]`)
+
+	// The SIX Swiss Implementation Guidelines Reference Standard
+	// Documentation declares the following regular expression pattern in
+	// https://validation.iso-payments.ch/gp/projectdata/qrrechnung/deliverables/installed/publishingproject/qr__ch.scm/html/en/0247.htm
+	ustrdRe = regexp.MustCompile(`([a-zA-Z0-9\.,;:'\+\-/\(\)?\*\[\]\{\}\\` + "`" + `´~ ]|[!"#%&<>÷=@_$£]|[àáâäçèéêëìíîïñòóôöùúûüýßÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÑ])`)
 )
 
 func (q *QRCH) Validate() *QRCH {
@@ -198,9 +203,14 @@ func (q *QRCH) Validate() *QRCH {
 		clone.RmtInf.Ref = v[:27]
 	}
 
-	if v := clone.RmtInf.AddInf.Ustrd; len(v) > 140 {
-		clone.RmtInf.AddInf.Ustrd = v[:140]
+	ustrd := clone.RmtInf.AddInf.Ustrd
+	matches := ustrdRe.FindAllString(ustrd, -1)
+	ustrd = strings.Join(matches, "")
+
+	if len(ustrd) > 140 {
+		ustrd = ustrd[:140]
 	}
+	clone.RmtInf.AddInf.Ustrd = ustrd
 
 	return clone
 }
