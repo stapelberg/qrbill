@@ -46,12 +46,12 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 		CdtrInf: qrbill.QRCHCdtrInf{
 			IBAN: ifEmpty(r.Form, "criban", "CH0209000000870913543"),
 			Cdtr: qrbill.Address{
-				AdrTp:            qrbill.AddressTypeCombined,
+				AdrTp:            qrbill.AddressType(ifEmpty(r.Form, "craddrtype", string(qrbill.AddressTypeStructured))),
 				Name:             ifEmpty(r.Form, "crname", "Legalize it!"),
 				StrtNmOrAdrLine1: ifEmpty(r.Form, "craddr1", "Quellenstrasse 25"),
-				BldgNbOrAdrLine2: ifEmpty(r.Form, "craddr2", "8005 Zürich"),
-				PstCd:            ifEmpty(r.Form, "crpost", ""),
-				TwnNm:            ifEmpty(r.Form, "crcity", ""),
+				BldgNbOrAdrLine2: ifEmpty(r.Form, "craddr2", ""),
+				PstCd:            ifEmpty(r.Form, "crpost", "8005"),
+				TwnNm:            ifEmpty(r.Form, "crcity", "Zürich"),
 				Ctry:             ifEmpty(r.Form, "crcountry", "CH"),
 			},
 		},
@@ -60,7 +60,7 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 			Ccy: "CHF",
 		},
 		UltmtDbtr: qrbill.Address{
-			AdrTp:            qrbill.AddressType(ifEmpty(r.Form, "udaddrtype", qrbill.AddressTypeCombined)),
+			AdrTp:            qrbill.AddressType(ifEmpty(r.Form, "udaddrtype", string(qrbill.AddressTypeCombined))),
 			Name:             ifEmpty(r.Form, "udname", "Michael Stapelberg"),
 			StrtNmOrAdrLine1: ifEmpty(r.Form, "udaddr1", "Stauffacherstr 42"),
 			BldgNbOrAdrLine2: ifEmpty(r.Form, "udaddr2", "8004 Zürich"),

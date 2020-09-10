@@ -70,7 +70,7 @@ type AddressType string
 
 const (
 	AddressTypeStructured AddressType = "S"
-	AddressTypeCombined               = "K"
+	AddressTypeCombined   AddressType = "K"
 )
 
 type Address struct {
