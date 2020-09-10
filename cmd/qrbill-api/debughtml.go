@@ -30,7 +30,7 @@ import (
 var (
 	fieldNameRe     = regexp.MustCompile(`<br>(&nbsp;)*([^:]+):`)
 	stringLiteralRe = regexp.MustCompile(`"([^"]*)"`)
-	parenRe         = regexp.MustCompile(`\(([^)]+)\)&nbsp;`)
+	typeInfoRe      = regexp.MustCompile(`(<br>(&nbsp;)*([^:]+):&nbsp;)[^"{]+`)
 )
 
 var tmpl = template.Must(template.New("").Parse(`<!DOCTYPE html>
@@ -203,7 +203,7 @@ func debugHTML(w http.ResponseWriter, r *http.Request, prefix string, qrch *qrbi
 		sp := spew.Sdump(vars...)
 		sp = strings.ReplaceAll(sp, "\n", "<br>")
 		sp = strings.ReplaceAll(sp, " ", "&nbsp;")
-		sp = parenRe.ReplaceAllString(sp, "")
+		sp = typeInfoRe.ReplaceAllString(sp, "$1")
 		sp = stringLiteralRe.ReplaceAllStringFunc(sp, func(stringLiteral string) string {
 			return `<span class="stringliteral">` + stringLiteral + "</span>"
 		})
