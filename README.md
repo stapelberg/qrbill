@@ -103,6 +103,9 @@ Thank you very much.
 | donation               | UBS (Android)          |          |                                     |
 | invoice                | UBS (Android)          |          |                                     |
 | invoice without amount | UBS (Android)          |          |                                     |
+| donation               | Credit Suisse (iOS)    |          |                                     |
+| invoice                | Credit Suisse (iOS)    |          |                                     |
+| invoice without amount | Credit Suisse (iOS)    |          |                                     |
 
 ### qrbill v0.1.3 (2020-Sep-10)
 
