@@ -1,6 +1,6 @@
 # qrbill Go package
 
-<img src="https://github.com/stapelberg/qrbill/raw/master/2020-06-25-qr-mary-jane.png" width="200" height="200" align="right">
+<img src="https://github.com/stapelberg/qrbill/raw/master/img/2020-09-21-qrbill-0.1.3-invoice-without-amount.png" width="200" height="200" align="right">
 
 The qrbill package implements generating QR-bill QR codes, which is a Swiss
 🇨🇭 payment standard:
@@ -51,14 +51,28 @@ http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b
 When you open the URL in your web browser, you should see the following debug
 output:
 
-![](2020-06-25-format-html.jpg)
+![](img/2020-09-21-format-html.jpg)
 
 When you scan the resulting QR code with your eBanking app, you should see a
 form like this:
 
-<img src="https://github.com/stapelberg/qrbill/raw/master/2020-06-25-ebanking-app.jpg" height="300">
+<img src="https://github.com/stapelberg/qrbill/raw/master/img/2020-06-25-ebanking-app.jpg" height="300">
 
 Once you are happy with the code parameters, change the `format` parameter from
 `html` to `png`, e.g.:
 
 http://localhost:9933/qr?format=png&udname=Mary+Jane&udaddr1=Artikel+19b
+
+## Crowd-sourced compatibility testing
+
+### qrbill v0.1.3 (2020-Sep-10)
+
+QR codes if you want to test:
+
+* donation ([debug link](http://localhost:9933/qr?format=html&udname=&udaddr1=&udaddr2=&udpost=&udcity=&udcountry=&udaddrtype=))
+* invoice ([debug link](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b&amount=23.42))
+* invoice without amount ([debug link](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b))
+
+| QR code  | scanned with        | paid via | Notes |
+|----------|---------------------|----------|-------|
+| donation | ZKB eBanking (iOS)  | ZKB      |
