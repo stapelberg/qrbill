@@ -80,17 +80,20 @@ Thank you very much.
 | expected message: `Spende 420` | expected sender address `Mary Jane`, expected amount 23.42 CHF | (without amount) |
 | [donation parameters](http://localhost:9933/qr?format=html&udname=&udaddr1=&udaddr2=&udpost=&udcity=&udcountry=&udaddrtype=) | [invoice parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b&amount=23.42) | [invoice without amount parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b) |
 
-| QR code                | scanned with              | paid via | Notes                                     |
-|------------------------|---------------------------|----------|-------------------------------------------|
-| donation               | SIX QR-bill validation    |          |                                           |
-| invoice                | SIX QR-bill validation    |          |                                           |
-| invoice without amount | SIX QR-bill validation    |          |                                           |
-| donation               | ZKB eBanking (iOS)        | ZKB      |                                           |
-| invoice                | ZKB eBanking (iOS)        |          |                                           |
-| invoice without amount | ZKB eBanking (iOS)        |          |                                           |
-| donation               | Revolut (iOS)             |          |                                           |
-| invoice                | Revolut (iOS)             |          | message replaced with revolut text!       |
-| invoice without amount | Revolut (iOS)             |          | message replaced with revolut text!       |
+| QR code                | scanned with           | paid via | Notes                               |
+|------------------------|------------------------|----------|-------------------------------------|
+| donation               | SIX QR-bill validation |          |                                     |
+| invoice                | SIX QR-bill validation |          |                                     |
+| invoice without amount | SIX QR-bill validation |          |                                     |
+| donation               | ZKB eBanking (iOS)     | ZKB      |                                     |
+| invoice                | ZKB eBanking (iOS)     |          |                                     |
+| invoice without amount | ZKB eBanking (iOS)     |          |                                     |
+| donation               | Revolut (iOS)          |          |                                     |
+| invoice                | Revolut (iOS)          |          | message replaced with revolut text! |
+| invoice without amount | Revolut (iOS)          |          | message replaced with revolut text! |
+| donation               | UBS (iOS)              |          |                                     |
+| invoice                | UBS (iOS)              |          |                                     |
+| invoice without amount | UBS (iOS)              |          |                                     |
 
 
 ### qrbill v0.1.3 (2020-Sep-10)
