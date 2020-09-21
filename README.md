@@ -1,6 +1,6 @@
 # qrbill Go package
 
-<img src="https://github.com/stapelberg/qrbill/raw/master/img/2020-09-21-qrbill-0.1.3-invoice-without-amount.png" width="200" height="200" align="right">
+<img src="https://github.com/stapelberg/qrbill/raw/master/img/2020-09-21-qrbill-0.1.4-invoice-without-amount.png" width="200" height="200" align="right">
 
 The qrbill package implements generating QR-bill QR codes, which is a Swiss
 🇨🇭 payment standard:
