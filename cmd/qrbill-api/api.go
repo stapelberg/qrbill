@@ -48,8 +48,8 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 			Cdtr: qrbill.Address{
 				AdrTp:            qrbill.AddressType(ifEmpty(r.Form, "craddrtype", string(qrbill.AddressTypeStructured))),
 				Name:             ifEmpty(r.Form, "crname", "Legalize it!"),
-				StrtNmOrAdrLine1: ifEmpty(r.Form, "craddr1", "Quellenstrasse 25"),
-				BldgNbOrAdrLine2: ifEmpty(r.Form, "craddr2", ""),
+				StrtNmOrAdrLine1: ifEmpty(r.Form, "craddr1", "Quellenstrasse"),
+				BldgNbOrAdrLine2: ifEmpty(r.Form, "craddr2", "25"),
 				PstCd:            ifEmpty(r.Form, "crpost", "8005"),
 				TwnNm:            ifEmpty(r.Form, "crcity", "Zürich"),
 				Ctry:             ifEmpty(r.Form, "crcountry", "CH"),
