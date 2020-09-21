@@ -116,3 +116,6 @@ Thank you very much.
 | donation               | Bank Linth (iOS)       |          |                                     |
 | invoice                | Bank Linth (iOS)       |          |                                     |
 | invoice without amount | Bank Linth (iOS)       |          |                                     |
+| donation               | UBS (iOS)                 |          | Legalize it !, 3543, Message for payee: Spende 420, Amount: 0       |
+| invoice                | UBS (iOS)                 |          | Legalize it !, 3543, Message for payee: Spende 420, Amount: 23.42   |
+| invoice without amount | UBS (iOS)                 |          | Legalize it !, 3543, Message for payee: Spende 420, Amount: 0       |
