@@ -106,6 +106,9 @@ Thank you very much.
 | donation               | Credit Suisse (iOS)    |          |                                     |
 | invoice                | Credit Suisse (iOS)    |          |                                     |
 | invoice without amount | Credit Suisse (iOS)    |          |                                     |
+| donation               | ZKB eBanking (Android) |          |                                     |
+| invoice                | ZKB eBanking (Android) |          |                                     |
+| invoice without amount | ZKB eBanking (Android) |          |                                     |
 
 ### qrbill v0.1.3 (2020-Sep-10)
 
