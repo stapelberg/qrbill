@@ -93,3 +93,6 @@ Thank you very much.
 | donation               | Zak - Bank Cler (Android) |          | no mention of "Mary Jane" or "Artikel 19" |
 | invoice                | Zak - Bank Cler (Android) |          | no mention of "Mary Jane" or "Artikel 19" |
 | invoice without amount | Zak - Bank Cler (Android) |          | no mention of "Mary Jane" or "Artikel 19" |
+| donation               | Bank Linth (iOS)       |          |                                     |
+| invoice                | Bank Linth (iOS)       |          |                                     |
+| invoice without amount | Bank Linth (iOS)       |          |                                     |
