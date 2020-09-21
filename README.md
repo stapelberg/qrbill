@@ -79,14 +79,17 @@ Thank you very much.
 | ![](img/2020-09-21-qrbill-0.1.3-donation.png) | ![](img/2020-09-21-qrbill-0.1.3-invoice.png) | ![](img/2020-09-21-qrbill-0.1.3-invoice-without-amount.png) |
 | [donation parameters](http://localhost:9933/qr?format=html&udname=&udaddr1=&udaddr2=&udpost=&udcity=&udcountry=&udaddrtype=) | [invoice parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b&amount=23.42) | [invoice without amount parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b) |
 
-| QR code                | scanned with           | paid via | Notes                               |
-|------------------------|------------------------|----------|-------------------------------------|
-| donation               | SIX QR-bill validation |          |                                     |
-| invoice                | SIX QR-bill validation |          |                                     |
-| invoice without amount | SIX QR-bill validation |          |                                     |
-| donation               | ZKB eBanking (iOS)     | ZKB      |                                     |
-| invoice                | ZKB eBanking (iOS)     |          |                                     |
-| invoice without amount | ZKB eBanking (iOS)     |          |                                     |
-| donation               | Revolut (iOS)          |          |                                     |
-| invoice                | Revolut (iOS)          |          | message replaced with revolut text! |
-| invoice without amount | Revolut (iOS)          |          | message replaced with revolut text! |
+| QR code                | scanned with              | paid via | Notes                                     |
+|------------------------|---------------------------|----------|-------------------------------------------|
+| donation               | SIX QR-bill validation    |          |                                           |
+| invoice                | SIX QR-bill validation    |          |                                           |
+| invoice without amount | SIX QR-bill validation    |          |                                           |
+| donation               | ZKB eBanking (iOS)        | ZKB      |                                           |
+| invoice                | ZKB eBanking (iOS)        |          |                                           |
+| invoice without amount | ZKB eBanking (iOS)        |          |                                           |
+| donation               | Revolut (iOS)             |          |                                           |
+| invoice                | Revolut (iOS)             |          | message replaced with revolut text!       |
+| invoice without amount | Revolut (iOS)             |          | message replaced with revolut text!       |
+| donation               | Zak - Bank Cler (Android) |          | no mention of "Mary Jane" or "Artikel 19" |
+| invoice                | Zak - Bank Cler (Android) |          | no mention of "Mary Jane" or "Artikel 19" |
+| invoice without amount | Zak - Bank Cler (Android) |          | no mention of "Mary Jane" or "Artikel 19" |
