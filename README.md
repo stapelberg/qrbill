@@ -97,6 +97,9 @@ Thank you very much.
 | donation               | Postfinance (Android)  |          |                                     |
 | invoice                | Postfinance (Android)  |          |                                     |
 | invoice without amount | Postfinance (Android)  |          |                                     |
+| donation               | Raiffeisen (Android)   |          |                                     |
+| invoice                | Raiffeisen (Android)   |          |                                     |
+| invoice without amount | Raiffeisen (Android)   |          |                                     |
 
 ### qrbill v0.1.3 (2020-Sep-10)
 
