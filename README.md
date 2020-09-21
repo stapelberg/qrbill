@@ -90,3 +90,6 @@ Thank you very much.
 | donation               | Revolut (iOS)          |          |                                     |
 | invoice                | Revolut (iOS)          |          | message replaced with revolut text! |
 | invoice without amount | Revolut (iOS)          |          | message replaced with revolut text! |
+| donation               | Bank Linth (iOS)       | ZKB      |                                     |
+| invoice                | Bank Linth (iOS)       |          |                                     |
+| invoice without amount | Bank Linth (iOS)       |          |                                     |
