@@ -77,6 +77,7 @@ Thank you very much.
 | donation | invoice | invoice without amount |
 |----------|---------|------------------------|
 | ![](img/2020-09-21-qrbill-0.1.4-donation.png) | ![](img/2020-09-21-qrbill-0.1.4-invoice.png) | ![](img/2020-09-21-qrbill-0.1.4-invoice-without-amount.png) |
+| expected message: `Spende 420` | expected sender address `Mary Jane`, expected amount 23.42 CHF | (without amount) |
 | [donation parameters](http://localhost:9933/qr?format=html&udname=&udaddr1=&udaddr2=&udpost=&udcity=&udcountry=&udaddrtype=) | [invoice parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b&amount=23.42) | [invoice without amount parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b) |
 
 | QR code                | scanned with              | paid via | Notes                                     |
