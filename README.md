@@ -94,7 +94,9 @@ Thank you very much.
 | donation               | UBS (iOS)              |          |                                     |
 | invoice                | UBS (iOS)              |          |                                     |
 | invoice without amount | UBS (iOS)              |          |                                     |
-
+| donation               | Postfinance (Android)  |          |                                     |
+| invoice                | Postfinance (Android)  |          |                                     |
+| invoice without amount | Postfinance (Android)  |          |                                     |
 
 ### qrbill v0.1.3 (2020-Sep-10)
 
