@@ -65,14 +65,28 @@ http://localhost:9933/qr?format=png&udname=Mary+Jane&udaddr1=Artikel+19b
 
 ## Crowd-sourced compatibility testing
 
+To build confidence in our implementation, please help us verify that the codes
+scan as expected!
+
 ### qrbill v0.1.3 (2020-Sep-10)
 
-QR codes if you want to test:
+Scan each of the following 3 QR codes in your eBanking app, program or web
+interface, then file an issue (or send a pull request) with your test results!
+Thank you very much.
 
-* donation ([debug link](http://localhost:9933/qr?format=html&udname=&udaddr1=&udaddr2=&udpost=&udcity=&udcountry=&udaddrtype=))
-* invoice ([debug link](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b&amount=23.42))
-* invoice without amount ([debug link](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b))
+| donation | invoice | invoice without amount |
+|----------|---------|------------------------|
+| ![](img/2020-09-21-qrbill-0.1.3-donation.png) | ![](img/2020-09-21-qrbill-0.1.3-invoice.png) | ![](img/2020-09-21-qrbill-0.1.3-invoice-without-amount.png) |
+| [donation parameters](http://localhost:9933/qr?format=html&udname=&udaddr1=&udaddr2=&udpost=&udcity=&udcountry=&udaddrtype=) | [invoice parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b&amount=23.42) | [invoice without amount parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b) |
 
-| QR code  | scanned with        | paid via | Notes |
-|----------|---------------------|----------|-------|
-| donation | ZKB eBanking (iOS)  | ZKB      |
+| QR code                | scanned with           | paid via | Notes                               |
+|------------------------|------------------------|----------|-------------------------------------|
+| donation               | SIX QR-bill validation |          |                                     |
+| invoice                | SIX QR-bill validation |          |                                     |
+| invoice without amount | SIX QR-bill validation |          |                                     |
+| donation               | ZKB eBanking (iOS)     | ZKB      |                                     |
+| invoice                | ZKB eBanking (iOS)     |          |                                     |
+| invoice without amount | ZKB eBanking (iOS)     |          |                                     |
+| donation               | Revolut (iOS)          |          |                                     |
+| invoice                | Revolut (iOS)          |          | message replaced with revolut text! |
+| invoice without amount | Revolut (iOS)          |          | message replaced with revolut text! |
