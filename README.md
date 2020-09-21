@@ -100,6 +100,9 @@ Thank you very much.
 | donation               | Raiffeisen (Android)   |          |                                     |
 | invoice                | Raiffeisen (Android)   |          |                                     |
 | invoice without amount | Raiffeisen (Android)   |          |                                     |
+| donation               | UBS (Android)          |          |                                     |
+| invoice                | UBS (Android)          |          |                                     |
+| invoice without amount | UBS (Android)          |          |                                     |
 
 ### qrbill v0.1.3 (2020-Sep-10)
 
