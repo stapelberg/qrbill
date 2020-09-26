@@ -63,6 +63,16 @@ Once you are happy with the code parameters, change the `format` parameter from
 
 http://localhost:9933/qr?format=png&udname=Mary+Jane&udaddr1=Artikel+19b
 
+## Auto-starting qrbill on macOS
+
+See also [Script management with launchd in Terminal on
+Mac](https://support.apple.com/guide/terminal/script-management-with-launchd-apdc6c1077b-5d5d-4d35-9c19-60f2397b2369/mac)
+for more details from Apple.
+
+1. Copy `qrbill-api` to `/Applications`
+1. Copy `launchd/net.zekjur.qrbill.plist` to `–/Library/LaunchAgents`
+1. Restart your computer, or run `launchctl load –/Library/LaunchAgents/net.zekjur.qrbill.plist`
+
 ## Crowd-sourced compatibility testing
 
 To build confidence in our implementation, please help us verify that the codes
