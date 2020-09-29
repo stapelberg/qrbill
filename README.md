@@ -90,35 +90,38 @@ Thank you very much.
 | expected message: `Spende 420` | expected sender address `Mary Jane`, expected amount 23.42 CHF | (without amount) |
 | [donation parameters](http://localhost:9933/qr?format=html&udname=&udaddr1=&udaddr2=&udpost=&udcity=&udcountry=&udaddrtype=) | [invoice parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b&amount=23.42) | [invoice without amount parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b) |
 
-| QR code                | scanned with           | paid via | Notes                               |
-|------------------------|------------------------|----------|-------------------------------------|
-| donation               | SIX QR-bill validation |          |                                     |
-| invoice                | SIX QR-bill validation |          |                                     |
-| invoice without amount | SIX QR-bill validation |          |                                     |
-| donation               | ZKB eBanking (iOS)     | ZKB      |                                     |
-| invoice                | ZKB eBanking (iOS)     |          |                                     |
-| invoice without amount | ZKB eBanking (iOS)     |          |                                     |
-| donation               | Revolut (iOS)          |          |                                     |
-| invoice                | Revolut (iOS)          |          | message replaced with revolut text! |
-| invoice without amount | Revolut (iOS)          |          | message replaced with revolut text! |
-| donation               | UBS (iOS)              |          |                                     |
-| invoice                | UBS (iOS)              |          |                                     |
-| invoice without amount | UBS (iOS)              |          |                                     |
-| donation               | Postfinance (Android)  |          |                                     |
-| invoice                | Postfinance (Android)  |          |                                     |
-| invoice without amount | Postfinance (Android)  |          |                                     |
-| donation               | Raiffeisen (Android)   |          |                                     |
-| invoice                | Raiffeisen (Android)   |          |                                     |
-| invoice without amount | Raiffeisen (Android)   |          |                                     |
-| donation               | UBS (Android)          |          |                                     |
-| invoice                | UBS (Android)          |          |                                     |
-| invoice without amount | UBS (Android)          |          |                                     |
-| donation               | Credit Suisse (iOS)    |          |                                     |
-| invoice                | Credit Suisse (iOS)    |          |                                     |
-| invoice without amount | Credit Suisse (iOS)    |          |                                     |
-| donation               | ZKB eBanking (Android) |          |                                     |
-| invoice                | ZKB eBanking (Android) |          |                                     |
-| invoice without amount | ZKB eBanking (Android) |          |                                     |
+| QR code                | scanned with              | paid via | Notes                                      |
+|------------------------|---------------------------|----------|--------------------------------------------|
+| donation               | SIX QR-bill validation    |          |                                            |
+| invoice                | SIX QR-bill validation    |          |                                            |
+| invoice without amount | SIX QR-bill validation    |          |                                            |
+| donation               | ZKB eBanking (iOS)        | ZKB      |                                            |
+| invoice                | ZKB eBanking (iOS)        |          |                                            |
+| invoice without amount | ZKB eBanking (iOS)        |          |                                            |
+| donation               | Revolut (iOS)             |          |                                            |
+| invoice                | Revolut (iOS)             |          | message replaced with revolut text!        |
+| invoice without amount | Revolut (iOS)             |          | message replaced with revolut text!        |
+| donation               | UBS (iOS)                 |          |                                            |
+| invoice                | UBS (iOS)                 |          |                                            |
+| invoice without amount | UBS (iOS)                 |          |                                            |
+| donation               | Postfinance (Android)     |          |                                            |
+| invoice                | Postfinance (Android)     |          |                                            |
+| invoice without amount | Postfinance (Android)     |          |                                            |
+| donation               | Raiffeisen (Android)      |          |                                            |
+| invoice                | Raiffeisen (Android)      |          |                                            |
+| invoice without amount | Raiffeisen (Android)      |          |                                            |
+| donation               | UBS (Android)             |          |                                            |
+| invoice                | UBS (Android)             |          |                                            |
+| invoice without amount | UBS (Android)             |          |                                            |
+| donation               | Credit Suisse (iOS)       |          |                                            |
+| invoice                | Credit Suisse (iOS)       |          |                                            |
+| invoice without amount | Credit Suisse (iOS)       |          |                                            |
+| donation               | ZKB eBanking (Android)    |          |                                            |
+| invoice                | ZKB eBanking (Android)    |          |                                            |
+| invoice without amount | ZKB eBanking (Android)    |          |                                            |
+| donation               | Zak - Bank Cler (Android) |          |                                            |
+| invoice                | Zak - Bank Cler (Android) |          | no mention of "Mary Jane" or "Artikel 19b" |
+| invoice without amount | Zak - Bank Cler (Android) |          | no mention of "Mary Jane" or "Artikel 19b" |
 
 ### qrbill v0.1.3 (2020-Sep-10)
 
