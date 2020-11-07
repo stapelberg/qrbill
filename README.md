@@ -1,6 +1,6 @@
 # qrbill Go package
 
-<img src="https://github.com/stapelberg/qrbill/raw/master/img/2020-09-21-qrbill-0.1.4-invoice-without-amount.png" width="200" height="200" align="right">
+<img src="https://github.com/stapelberg/qrbill/raw/master/img/2020-11-07-qrbill-0.1.5-invoice-without-amount.png" width="200" height="200" align="right">
 
 The qrbill package implements generating QR-bill QR codes, which is a Swiss
 🇨🇭 payment standard:
@@ -78,6 +78,31 @@ for more details from Apple.
 To build confidence in our implementation, please help us verify that the codes
 scan as expected!
 
+### qrbill v0.1.5 (2020-Nov-07)
+
+Scan each of the following 3 QR codes in your eBanking app, program or web
+interface, then file an issue (or send a pull request) with your test results!
+Thank you very much.
+
+| donation | invoice | invoice without amount |
+|----------|---------|------------------------|
+| ![](img/2020-11-07-qrbill-0.1.5-donation.png) | ![](img/2020-11-07-qrbill-0.1.5-invoice.png) | ![](img/2020-11-07-qrbill-0.1.5-invoice-without-amount.png) |
+| expected message: `Spende 420` | expected sender address `Mary Jane`, expected amount 23.42 CHF | (without amount) |
+| [donation parameters](http://localhost:9933/qr?format=html&udname=&udaddr1=&udaddr2=&udpost=&udcity=&udcountry=&udaddrtype=) | [invoice parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b&amount=23.42) | [invoice without amount parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b) |
+
+| QR code                | scanned with              | paid via | Notes                                      |
+|------------------------|---------------------------|----------|--------------------------------------------|
+| donation               | SIX QR-bill validation    |          |                                            |
+| invoice                | SIX QR-bill validation    |          |                                            |
+| invoice without amount | SIX QR-bill validation    |          |                                            |
+| donation               | ZKB eBanking (iOS)        | ZKB      |                                            |
+| invoice                | ZKB eBanking (iOS)        |          |                                            |
+| invoice without amount | ZKB eBanking (iOS)        |          |                                            |
+| donation               | Revolut (iOS)             |          |                                            |
+| invoice                | Revolut (iOS)             |          | message replaced with revolut text!        |
+| invoice without amount | Revolut (iOS)             |          | message replaced with revolut text!        |
+
+
 ### qrbill v0.1.4 (2020-Sep-21)
 
 Scan each of the following 3 QR codes in your eBanking app, program or web
@@ -88,7 +113,7 @@ Thank you very much.
 |----------|---------|------------------------|
 | ![](img/2020-09-21-qrbill-0.1.4-donation.png) | ![](img/2020-09-21-qrbill-0.1.4-invoice.png) | ![](img/2020-09-21-qrbill-0.1.4-invoice-without-amount.png) |
 | expected message: `Spende 420` | expected sender address `Mary Jane`, expected amount 23.42 CHF | (without amount) |
-| [donation parameters](http://localhost:9933/qr?format=html&udname=&udaddr1=&udaddr2=&udpost=&udcity=&udcountry=&udaddrtype=) | [invoice parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b&amount=23.42) | [invoice without amount parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b) |
+| [donation parameters](http://localhost:9933/qr?format=html&udname=&udaddr1=&udaddr2=&udpost=&udcity=&udcountry=CH&udaddrtype=S&message=Mitgliederbeitrag%20/%20Spende) | [invoice parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b&amount=23.42) | [invoice without amount parameters](http://localhost:9933/qr?format=html&udname=Mary+Jane&udaddr1=Artikel+19b) |
 
 | QR code                | scanned with              | paid via | Notes                                      |
 |------------------------|---------------------------|----------|--------------------------------------------|
