@@ -14,4 +14,4 @@
 
 package qrbill
 
-//go:generate sh -c "go run third_party/goembed/goembed.go -package qrbill -var swisscross third_party/swiss-cross/CH-Kreuz_7mm/CH-Kreuz_7mm.png > GENERATED_swisscross.go && gofmt -w GENERATED_swisscross.go"
+//go:generate sh -c "go run third_party/goembed/goembed.go -package qrbill -var swisscross third_party/swiss-cross/CH-Kreuz_7mm/CH-Kreuz_7mm.png third_party/swiss-cross/CH-Kreuz_7mm/CH-Kreuz_7mm.svg > GENERATED_swisscross.go && gofmt -w GENERATED_swisscross.go"

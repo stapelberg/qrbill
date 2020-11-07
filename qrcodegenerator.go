@@ -53,14 +53,25 @@ func generateSwissQrCode(payload string) (image.Image, error) {
 	return overlayWithSwissCross(qrCodeImage)
 }
 
-func generateQrCodeImage(payload string) (image.Image, error) {
-
-	w := qrcode.NewQRCodeWriter()
-	hints := map[gozxing.EncodeHintType]interface{}{
+func qrEncodeHints() map[gozxing.EncodeHintType]interface{} {
+	return map[gozxing.EncodeHintType]interface{}{
+		// as per https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf, section 5.1:
+		// Error correction level M (redundancy of around 15%)
 		gozxing.EncodeHintType_ERROR_CORRECTION: decoder.ErrorCorrectionLevel_M,
-		gozxing.EncodeHintType_CHARACTER_SET:    common.CharacterSetECI_UTF8,
+
+		// Section 4.2.1: Character set:
+		// UTF-8 should be used for encoding
+		gozxing.EncodeHintType_CHARACTER_SET: common.CharacterSetECI_UTF8,
 	}
-	matrix, err := w.Encode(payload, gozxing.BarcodeFormat_QR_CODE, qrCodeEdgeSidePx, qrCodeEdgeSidePx, hints)
+}
+
+func generateQrCodeImage(payload string) (image.Image, error) {
+	matrix, err := qrcode.NewQRCodeWriter().Encode(
+		payload,                       // contents
+		gozxing.BarcodeFormat_QR_CODE, // format
+		qrCodeEdgeSidePx,              // width
+		qrCodeEdgeSidePx,              // height
+		qrEncodeHints())               // hints
 	if err != nil {
 		return nil, err
 	}

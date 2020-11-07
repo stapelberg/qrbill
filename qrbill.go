@@ -32,9 +32,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/aaronarduino/goqrsvg"
-	svg "github.com/ajstarks/svgo"
-	"github.com/boombuler/barcode/qr"
+	"github.com/makiuchi-d/gozxing/qrcode/decoder"
+	"github.com/makiuchi-d/gozxing/qrcode/encoder"
 
 	// We currently read the swiss cross PNG version.
 	_ "image/png"
@@ -265,37 +264,27 @@ type Bill struct {
 }
 
 func (b *Bill) EncodeToSVG() ([]byte, error) {
-	// as per https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf, section 5.1:
-	// Error correction level M (redundancy of around 15%)
-
-	// Section 4.2.1: Character set:
-	// UTF-8 should be used for encoding
-
-	code, err := qr.Encode(b.qrcontents, qr.M, qr.Unicode)
+	var err error
+	code, err := encoder.Encoder_encode(b.qrcontents, decoder.ErrorCorrectionLevel_M, qrEncodeHints())
 	if err != nil {
 		return nil, err
 	}
-	var buf bytes.Buffer
-	s := svg.New(&buf)
-	qrsvg := goqrsvg.NewQrSVG(code, 5)
-	qrsvg.StartQrSVG(s)
-	if err := qrsvg.WriteQrSVG(s); err != nil {
+
+	const quietzone = 4
+	qrCodeSVG, err := renderResultSVG(code, qrCodeEdgeSidePx, qrCodeEdgeSidePx, quietzone)
+	if err != nil {
 		return nil, err
 	}
 
-	// Overlay the swiss cross (not entirely scaled correctly, but should be
-	// good enough):
-	const px = 5
-	x := (30 - 4) * px
-	y := (30 - 4) * px
+	// overlay the swiss cross
+	cross := swisscross["third_party/swiss-cross/CH-Kreuz_7mm/CH-Kreuz_7mm.svg"]
+	// Remove XML document header, we embed the <svg> element:
+	cross = bytes.ReplaceAll(cross, []byte(`<?xml version="1.0" encoding="utf-8"?>`), nil)
+	// Overwrite position and size of the embedded <svg> element:
+	cross = bytes.ReplaceAll(cross, []byte(`x="0px" y="0px"`), []byte(`x="549" y="549" width="166" height="166"`))
 
-	s.Rect(x+0*px, y+0*px, 8*px, 8*px, "fill:#FFFFFF")
-	s.Rect(x+0*px+2, y+0*px+2, 8*px-4, 8*px-4, "fill:#000000")
-	s.Rect(x+3*px, y+1*px, 2*px, 6*px, "fill:#FFFFFF")
-	s.Rect(x+1*px, y+3*px, 6*px, 2*px, "fill:#FFFFFF")
-
-	s.End()
-	return buf.Bytes(), nil
+	// Inject the swiss cross into the <svg> document:
+	return bytes.ReplaceAll(qrCodeSVG, []byte(`</g>`), append(cross, []byte("</g>")...)), nil
 }
 
 func (b *Bill) EncodeToImage() (image.Image, error) {
