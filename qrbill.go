@@ -255,7 +255,7 @@ func (q *QRCH) Encode() (*Bill, error) {
 			f.RmtInf.Ref,
 			f.RmtInf.AddInf.Ustrd,
 			f.RmtInf.AddInf.Trailer,
-		}, "\n"),
+		}, "\n") + "\n",
 	}, nil
 }
 
