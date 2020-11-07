@@ -19,8 +19,10 @@ import (
 	"image"
 	"image/draw"
 
-	"github.com/boombuler/barcode"
-	"github.com/boombuler/barcode/qr"
+	"github.com/makiuchi-d/gozxing"
+	"github.com/makiuchi-d/gozxing/common"
+	"github.com/makiuchi-d/gozxing/qrcode"
+	"github.com/makiuchi-d/gozxing/qrcode/decoder"
 )
 
 // This is a port of the Java 1.7 reference example from paymentstandards.ch:
@@ -52,15 +54,17 @@ func generateSwissQrCode(payload string) (image.Image, error) {
 }
 
 func generateQrCodeImage(payload string) (image.Image, error) {
-	code, err := qr.Encode(payload, qr.M, qr.Unicode)
+
+	w := qrcode.NewQRCodeWriter()
+	hints := map[gozxing.EncodeHintType]interface{}{
+		gozxing.EncodeHintType_ERROR_CORRECTION: decoder.ErrorCorrectionLevel_M,
+		gozxing.EncodeHintType_CHARACTER_SET:    common.CharacterSetECI_UTF8,
+	}
+	matrix, err := w.Encode(payload, gozxing.BarcodeFormat_QR_CODE, qrCodeEdgeSidePx, qrCodeEdgeSidePx, hints)
 	if err != nil {
 		return nil, err
 	}
-	qrcode, err := barcode.Scale(code, qrCodeEdgeSidePx, qrCodeEdgeSidePx)
-	if err != nil {
-		return nil, err
-	}
-	return qrcode, nil
+	return matrix, nil
 }
 
 func overlayWithSwissCross(qrCodeImage image.Image) (image.Image, error) {
