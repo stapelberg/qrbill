@@ -277,11 +277,11 @@ func (b *Bill) EncodeToSVG() ([]byte, error) {
 	}
 
 	// overlay the swiss cross
-	cross := swisscross["third_party/swiss-cross/CH-Kreuz_7mm/CH-Kreuz_7mm.svg"]
+	cross := swisscross["swisscross.svg"]
 	// Remove XML document header, we embed the <svg> element:
 	cross = bytes.ReplaceAll(cross, []byte(`<?xml version="1.0" encoding="utf-8"?>`), nil)
 	// Overwrite position and size of the embedded <svg> element:
-	cross = bytes.ReplaceAll(cross, []byte(`x="0px" y="0px"`), []byte(`x="549" y="549" width="166" height="166"`))
+	cross = bytes.ReplaceAll(cross, []byte(`<svg x="0" y="0" width="166" height="166"`), []byte(`<svg x="549" y="549" width="166" height="166"`))
 
 	// Inject the swiss cross into the <svg> document:
 	return bytes.ReplaceAll(qrCodeSVG, []byte(`</g>`), append(cross, []byte("</g>")...)), nil
