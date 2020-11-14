@@ -287,6 +287,21 @@ func (b *Bill) EncodeToSVG() ([]byte, error) {
 	return bytes.ReplaceAll(qrCodeSVG, []byte(`</g>`), append(cross, []byte("</g>")...)), nil
 }
 
+func (b *Bill) EncodeToEPS() ([]byte, error) {
+	var err error
+	code, err := encoder.Encoder_encode(b.qrcontents, decoder.ErrorCorrectionLevel_M, qrEncodeHints())
+	if err != nil {
+		return nil, err
+	}
+
+	const quietzone = 4
+	qrCodeEPS, err := renderResultEPS(code, qrCodeEdgeSidePx, qrCodeEdgeSidePx, quietzone)
+	if err != nil {
+		return nil, err
+	}
+	return qrCodeEPS, nil
+}
+
 func (b *Bill) EncodeToImage() (image.Image, error) {
 	return generateSwissQrCode(b.qrcontents)
 }

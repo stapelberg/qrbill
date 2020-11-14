@@ -105,7 +105,8 @@ func logic() error {
 			format != "svg" &&
 			format != "txt" &&
 			format != "html" &&
-			format != "wv" {
+			format != "wv" &&
+			format != "eps" {
 			msg := fmt.Sprintf("format (%q) must be one of png, svg, txt or html", format)
 			log.Printf("%s %s", prefix, msg)
 			http.Error(w, msg, http.StatusBadRequest)
@@ -156,6 +157,18 @@ func logic() error {
 			}
 
 			w.Header().Add("Content-Type", "image/svg+xml")
+
+		case "eps":
+			var err error
+			b, err = bill.EncodeToEPS()
+			if err != nil {
+				log.Printf("%s %s", prefix, err)
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			w.Header().Add("Content-Type", "image/eps")
+			w.Header().Add("Content-Disposition", `attachment; filename="qr.eps"`)
 
 		case "txt":
 			w.Header().Add("Content-Type", "text/plain; charset=utf-8")
