@@ -302,6 +302,21 @@ func (b *Bill) EncodeToEPS() ([]byte, error) {
 	return qrCodeEPS, nil
 }
 
+func (b *Bill) EncodeToPDF() ([]byte, error) {
+	var err error
+	code, err := encoder.Encoder_encode(b.qrcontents, decoder.ErrorCorrectionLevel_M, qrEncodeHints())
+	if err != nil {
+		return nil, err
+	}
+
+	const quietzone = 4
+	qrCodeEPS, err := renderResultPDF(code, qrCodeEdgeSidePx, qrCodeEdgeSidePx, quietzone)
+	if err != nil {
+		return nil, err
+	}
+	return qrCodeEPS, nil
+}
+
 func (b *Bill) EncodeToImage() (image.Image, error) {
 	return generateSwissQrCode(b.qrcontents)
 }

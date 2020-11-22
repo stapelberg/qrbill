@@ -103,11 +103,12 @@ func logic() error {
 
 		if format != "png" &&
 			format != "svg" &&
+			format != "pdf" &&
 			format != "txt" &&
 			format != "html" &&
 			format != "wv" &&
 			format != "eps" {
-			msg := fmt.Sprintf("format (%q) must be one of png, svg, txt or html", format)
+			msg := fmt.Sprintf("format (%q) must be one of png, svg, pdf, eps, txt or html", format)
 			log.Printf("%s %s", prefix, msg)
 			http.Error(w, msg, http.StatusBadRequest)
 			return
@@ -157,6 +158,17 @@ func logic() error {
 			}
 
 			w.Header().Add("Content-Type", "image/svg+xml")
+
+		case "pdf":
+			var err error
+			b, err = bill.EncodeToPDF()
+			if err != nil {
+				log.Printf("%s %s", prefix, err)
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			w.Header().Add("Content-Type", "application/pdf")
 
 		case "eps":
 			var err error
