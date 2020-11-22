@@ -16,6 +16,7 @@ package qrbill
 
 import (
 	"bytes"
+	"fmt"
 
 	svg "github.com/ajstarks/svgo"
 	"github.com/makiuchi-d/gozxing"
@@ -60,14 +61,17 @@ func renderResultSVG(code *encoder.QRCode, width, height, quietZone int) ([]byte
 
 	s.Group(`shape-rendering="crispEdges"`)
 
+	pathdata := ""
 	for inputY, outputY := 0, topPadding; inputY < inputHeight; inputY, outputY = inputY+1, outputY+multiple {
 		// Write the contents of this row of the barcode
 		for inputX, outputX := 0, leftPadding; inputX < inputWidth; inputX, outputX = inputX+1, outputX+multiple {
 			if input.Get(inputX, inputY) == 1 {
-				s.Rect(outputX, outputY, multiple, multiple, "fill:black;stroke:none;")
+				pathdata += fmt.Sprintf("M%d,%d V%d H%d V%d H%d Z ",
+					outputX, outputY, outputY+multiple, outputX+multiple, outputY, outputX)
 			}
 		}
 	}
+	s.Path(pathdata, "fill:black;stroke:none;")
 
 	s.Gend()
 
