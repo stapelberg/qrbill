@@ -28,6 +28,7 @@ package qrbill
 
 import (
 	"bytes"
+	_ "embed"
 	"image"
 	"regexp"
 	"strings"
@@ -277,7 +278,9 @@ func (b *Bill) EncodeToSVG() ([]byte, error) {
 	}
 
 	// overlay the swiss cross
-	cross := swisscross["swisscross.svg"]
+
+	//go:embed swisscross.svg
+	var cross []byte
 	// Remove XML document header, we embed the <svg> element:
 	cross = bytes.ReplaceAll(cross, []byte(`<?xml version="1.0" encoding="utf-8"?>`), nil)
 	// Overwrite position and size of the embedded <svg> element:

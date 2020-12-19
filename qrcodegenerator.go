@@ -16,6 +16,7 @@ package qrbill
 
 import (
 	"bytes"
+	_ "embed"
 	"image"
 	"image/draw"
 
@@ -79,7 +80,8 @@ func generateQrCodeImage(payload string) (image.Image, error) {
 }
 
 func overlayWithSwissCross(qrCodeImage image.Image) (image.Image, error) {
-	b := swisscross["third_party/swiss-cross/CH-Kreuz_7mm/CH-Kreuz_7mm.png"]
+	//go:embed third_party/swiss-cross/CH-Kreuz_7mm/CH-Kreuz_7mm.png
+	var b []byte
 	swissCrossImage, _, err := image.Decode(bytes.NewReader(b))
 	if err != nil {
 		return nil, err
