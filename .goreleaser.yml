@@ -5,25 +5,34 @@ before:
     - go mod download
     - go generate ./...
 builds:
-- id: "stat"
+- id: "qrbill"
   main: "./cmd/qrbill-api"
   binary: "qrbill-api"
   env:
   - CGO_ENABLED=0
   goos:
   - linux
-  - darwin
   - windows
   goarch:
   - amd64
   - arm
   - arm64
   - 386
-  ignore:
-  - goos: darwin
-    goarch: 386
+- id: "qrbill-macos"
+  main: "./cmd/qrbill-api"
+  binary: "qrbill-api"
+  env:
+  - CGO_ENABLED=0
+  goos:
+  - darwin
+  goarch:
+  - amd64
+  hooks:
+    post: gon gon.hcl
 archives:
 - name_template: "qrbill_api_{{ .Os }}_{{ .Arch }}"
+  builds:
+  - qrbill
   replacements:
     darwin: Darwin
     linux: Linux
@@ -44,3 +53,5 @@ release:
   github:
     owner: stapelberg
     name: qrbill
+  extra_files:
+    - glob: ./dist/qrbill_api_Darwin_x86_64.dmg
