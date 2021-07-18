@@ -26,9 +26,10 @@ builds:
   goos:
   - darwin
   goarch:
+  - arm64
   - amd64
   hooks:
-    post: gon gon.hcl
+    post: "gon gon_{{ .Target }}.hcl"
 archives:
 - name_template: "qrbill_api_{{ .Os }}_{{ .Arch }}"
   builds:
@@ -54,4 +55,4 @@ release:
     owner: stapelberg
     name: qrbill
   extra_files:
-    - glob: ./dist/qrbill_api_Darwin_x86_64.dmg
+    - glob: ./dist/qrbill_api_Darwin_*.dmg
