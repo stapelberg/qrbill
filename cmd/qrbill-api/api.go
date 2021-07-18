@@ -47,7 +47,7 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 			IBAN: ifEmpty(r.Form, "criban", "CH0209000000870913543"),
 			Cdtr: qrbill.Address{
 				AdrTp:            qrbill.AddressType(ifEmpty(r.Form, "craddrtype", string(qrbill.AddressTypeStructured))),
-				Name:             ifEmpty(r.Form, "crname", "Legalize it!"),
+				Name:             ifEmpty(r.Form, "crname", "Legalize it"),
 				StrtNmOrAdrLine1: ifEmpty(r.Form, "craddr1", "Quellenstrasse"),
 				BldgNbOrAdrLine2: ifEmpty(r.Form, "craddr2", "25"),
 				PstCd:            ifEmpty(r.Form, "crpost", "8005"),
