@@ -263,6 +263,10 @@ type Bill struct {
 	qrcontents string
 }
 
+func (b *Bill) EncodeToString() string {
+	return b.qrcontents
+}
+
 func (b *Bill) EncodeToSVG() ([]byte, error) {
 	var err error
 	code, err := encoder.Encoder_encode(b.qrcontents, decoder.ErrorCorrectionLevel_M, qrEncodeHints())

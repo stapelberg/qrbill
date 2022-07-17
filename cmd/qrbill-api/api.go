@@ -27,7 +27,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/mattn/go-isatty"
 	"github.com/stapelberg/qrbill"
 
@@ -184,7 +183,7 @@ func logic() error {
 
 		case "txt":
 			w.Header().Add("Content-Type", "text/plain; charset=utf-8")
-			spew.Fdump(w, qrch.Validate())
+			fmt.Fprintf(w, "%s", bill.EncodeToString())
 
 		case "html":
 			debugHTML(w, r, prefix, qrch)
