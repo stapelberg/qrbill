@@ -192,6 +192,8 @@ func (q *QRCH) Validate() *QRCH {
 
 	clone.UltmtCdtr = clone.UltmtCdtr.Validate()
 
+	clone.UltmtDbtr = clone.UltmtDbtr.Validate()
+
 	clone.RmtInf.Tp = nonAlphanumericRe.ReplaceAllString(clone.RmtInf.Tp, "")
 	if v := clone.RmtInf.Tp; len(v) > 4 {
 		clone.RmtInf.Tp = v[:4]
