@@ -21,7 +21,7 @@
 // https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf (English)
 // https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-de.pdf (German)
 //
-// Note
+// # Note
 //
 // QRR and SCOR references are not yet implemented.
 package qrbill
