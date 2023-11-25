@@ -124,6 +124,20 @@ type QRCHCcyAmt struct {
 	Ccy string // Currency
 }
 
+func (a QRCHCcyAmt) Validate() QRCHCcyAmt {
+	c := a
+
+	if c.Amt != "" {
+		// Some banking apps are picky regarding integer numbers (e.g. 50) and
+		// require a separator plus two digits (e.g. 50.00).
+		if !strings.Contains(c.Amt, ".") {
+			c.Amt += ".00"
+		}
+	}
+
+	return c
+}
+
 type QRCHRmtInfAddInf struct {
 	Ustrd   string // Unstructured message
 	Trailer string // Trailer
@@ -193,6 +207,8 @@ func (q *QRCH) Validate() *QRCH {
 	clone.UltmtCdtr = clone.UltmtCdtr.Validate()
 
 	clone.UltmtDbtr = clone.UltmtDbtr.Validate()
+
+	clone.CcyAmt = clone.CcyAmt.Validate()
 
 	clone.RmtInf.Tp = nonAlphanumericRe.ReplaceAllString(clone.RmtInf.Tp, "")
 	if v := clone.RmtInf.Tp; len(v) > 4 {
