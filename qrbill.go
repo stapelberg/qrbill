@@ -18,8 +18,8 @@
 // was the Swiss Payment Standards 2019 Swiss Implementation Guidelines QR-bill
 // Version 2.1, to be found at:
 //
-// https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-en.pdf (English)
-// https://www.paymentstandards.ch/dam/downloads/ig-qr-bill-de.pdf (German)
+// https://www.six-group.com/dam/download/banking-services/standardization/qr-bill/ig-qr-bill-v2.1-en.pdf (English)
+// https://www.six-group.com/dam/download/banking-services/standardization/qr-bill/ig-qr-bill-v2.1-de.pdf (German)
 //
 // # Note
 //
