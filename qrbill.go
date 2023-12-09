@@ -28,8 +28,11 @@ package qrbill
 
 import (
 	"bytes"
+	"fmt"
 	"image"
+	"log"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/makiuchi-d/gozxing/qrcode/decoder"
@@ -128,11 +131,28 @@ func (a QRCHCcyAmt) Validate() QRCHCcyAmt {
 	c := a
 
 	if c.Amt != "" {
+		parsed, err := strconv.ParseFloat(c.Amt, 64)
+		if err != nil {
+			log.Printf("ParseFloat(%q): %v", c.Amt, err)
+		}
+
+		// The Swiss Payment Standards 2019 Swiss Implementation Guidelines
+		// QR-bill Version 2.3 explains:
+		//
+		// The amount element is to be entered without leading
+		// zeroes, including decimal separators and two decimal
+		// places.
+		// Decimal, maximum 12-digits permitted, including decimal
+		// separators. Only decimal points (".") are permitted as
+		// decimal separators. The amount must be between CHF/
+		// EUR 0.01 and 999,999,999.99
+		//
+		// (Notably, the validator is less strict and also permits values
+		// without decimal separators or with only one decimal place.)
+		//
 		// Some banking apps are picky regarding integer numbers (e.g. 50) and
 		// require a separator plus two digits (e.g. 50.00).
-		if !strings.Contains(c.Amt, ".") {
-			c.Amt += ".00"
-		}
+		c.Amt = fmt.Sprintf("%.2f", parsed)
 	}
 
 	return c
