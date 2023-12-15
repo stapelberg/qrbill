@@ -43,6 +43,16 @@ func TestAmountValidation(t *testing.T) {
 		},
 
 		{
+			amount:     "50.339",
+			wantAmount: "50.34",
+		},
+
+		{
+			amount:     "50.331",
+			wantAmount: "50.33",
+		},
+
+		{
 			amount:     "50.-",
 			wantAmount: "0.00", // result of invalid input
 		},
