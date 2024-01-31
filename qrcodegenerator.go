@@ -20,7 +20,6 @@ import (
 	"image/draw"
 
 	"github.com/makiuchi-d/gozxing"
-	"github.com/makiuchi-d/gozxing/common"
 	"github.com/makiuchi-d/gozxing/qrcode"
 	"github.com/makiuchi-d/gozxing/qrcode/decoder"
 )
@@ -61,7 +60,7 @@ func qrEncodeHints() map[gozxing.EncodeHintType]interface{} {
 
 		// Section 4.2.1: Character set:
 		// UTF-8 should be used for encoding
-		gozxing.EncodeHintType_CHARACTER_SET: common.CharacterSetECI_UTF8,
+		gozxing.EncodeHintType_CHARACTER_SET: "UTF-8",
 	}
 }
 
