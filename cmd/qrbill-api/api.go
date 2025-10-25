@@ -59,12 +59,12 @@ func qrchFromRequest(r *http.Request) *qrbill.QRCH {
 			Ccy: "CHF",
 		},
 		UltmtDbtr: qrbill.Address{
-			AdrTp:            qrbill.AddressType(ifEmpty(r.Form, "udaddrtype", string(qrbill.AddressTypeCombined))),
+			AdrTp:            qrbill.AddressType(ifEmpty(r.Form, "udaddrtype", string(qrbill.AddressTypeStructured))),
 			Name:             ifEmpty(r.Form, "udname", "Michael Stapelberg"),
-			StrtNmOrAdrLine1: ifEmpty(r.Form, "udaddr1", "Stauffacherstr 42"),
-			BldgNbOrAdrLine2: ifEmpty(r.Form, "udaddr2", "8004 Zürich"),
-			PstCd:            ifEmpty(r.Form, "udpost", ""),
-			TwnNm:            ifEmpty(r.Form, "udcity", ""),
+			StrtNmOrAdrLine1: ifEmpty(r.Form, "udaddr1", "Stauffacherstr"),
+			BldgNbOrAdrLine2: ifEmpty(r.Form, "udaddr2", "42"),
+			PstCd:            ifEmpty(r.Form, "udpost", "8004"),
+			TwnNm:            ifEmpty(r.Form, "udcity", "Zürich"),
 			Ctry:             ifEmpty(r.Form, "udcountry", "CH"),
 		},
 		RmtInf: qrbill.QRCHRmtInf{

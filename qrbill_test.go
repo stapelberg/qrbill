@@ -84,10 +84,12 @@ func TestAmountValidation(t *testing.T) {
 				CdtrInf: qrbill.QRCHCdtrInf{
 					IBAN: "CH0209000000870913543",
 					Cdtr: qrbill.Address{
-						AdrTp:            qrbill.AddressTypeCombined,
+						AdrTp:            qrbill.AddressTypeStructured,
 						Name:             "Legalize it",
-						StrtNmOrAdrLine1: "Quellenstrasse 25",
-						BldgNbOrAdrLine2: "8005 Zürich",
+						StrtNmOrAdrLine1: "Quellenstrasse",
+						BldgNbOrAdrLine2: "25",
+						PstCd:            "8005",
+						TwnNm:            "Zürich",
 						Ctry:             "CH",
 					},
 				},
@@ -96,10 +98,12 @@ func TestAmountValidation(t *testing.T) {
 					Ccy: "CHF",
 				},
 				UltmtDbtr: qrbill.Address{
-					AdrTp:            qrbill.AddressTypeCombined,
+					AdrTp:            qrbill.AddressTypeStructured,
 					Name:             "Michael Stapelberg",
-					StrtNmOrAdrLine1: "Stauffacherstr 42",
-					BldgNbOrAdrLine2: "8004 Zürich",
+					StrtNmOrAdrLine1: "Stauffacherstr",
+					BldgNbOrAdrLine2: "42",
+					PstCd:            "8004",
+					TwnNm:            "Zürich",
 					Ctry:             "CH",
 				},
 				RmtInf: qrbill.QRCHRmtInf{
